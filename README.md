@@ -11,6 +11,10 @@ Scheduling non-essential work yourself is very difficult to do. It’s impossibl
 * [Cooperative Scheduling of Background Tasks](https://www.w3.org/TR/requestidlecallback/)
 
 
+### Install
+> example of a starter that uses `@angularclass/request-idle-callback` [angular2-webpack-starter](https://github.com/AngularClass/angular2-webpack-starter/commit/01e4533b917bfbbda808bd681dbc58a9c)4d45004
+
+
 ```typescript
 bootstrap(App, [
   ...ANGULARCLASS_IDLE_PROVIDERS  
