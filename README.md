@@ -1,4 +1,4 @@
-# Request Idle Callback
+# Angular 2 Request Idle Callback
 requestIdleCallback for Angular 2 used for Progressive Web App
 
 ### Why should I use requestIdleCallback?
