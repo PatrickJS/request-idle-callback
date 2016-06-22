@@ -26,6 +26,7 @@ class App {
 
 prefetch data/async route after bootstrap via `providePrefetchIdleCallbacks`
 ```typescript
+import { providePrefetchIdleCallbacks } from '@angularclass/request-idle-callback';
 
 function callbackToPrefetch() {
 }
