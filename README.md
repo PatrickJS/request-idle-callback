@@ -1,6 +1,9 @@
 # Request Idle Callback
-requestIdleCallback for Angular 2
+requestIdleCallback for Angular 2 used for Progressive Web App
 
+## links
+* [Using requestIdleCallback](https://developers.google.com/web/updates/2015/08/using-requestidlecallback)
+* [Cooperative Scheduling of Background Tasks](https://www.w3.org/TR/requestidlecallback/)
 
 
 ```typescript
