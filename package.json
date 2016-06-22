@@ -1,8 +1,10 @@
 {
   "name": "@angularclass/request-idle-callback",
-  "version": "1.0.1",
+  "version": "1.0.2",
+  "author": "Partick Stapleton <patrick@angularclass.com>",
   "description": "requestIdleCallback for Angular 2",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
       "typings-install": "typings install",
       "watch": "tsc --watch",
@@ -38,7 +40,15 @@
     "type": "git",
     "url": "git+https://github.com/AngularClass/request-idle-callback.git"
   },
-  "author": "Partick Stapleton <patrick@angularclass.com>",
+  "keywords": [
+    "request idle callback",
+    "angular2",
+    "AngularClass",
+    "Angular Class",
+    "angular2modules",
+    "requestIdleCallback",
+    "Angular 2 requestIdleCallback"
+  ],
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/AngularClass/request-idle-callback/issues"
