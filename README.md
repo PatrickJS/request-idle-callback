@@ -22,3 +22,19 @@ class App {
 }
 
 ```
+
+
+prefetch data/async route after bootstrap via `providePrefetchIdleCallbacks`
+```typescript
+
+function callbackToPrefetch() {
+}
+
+var arrayOfCallbacks = [
+  callbackToPrefetch
+]
+
+bootstrap(App, [
+  providePrefetchIdleCallbacks(arrayOfCallbacks) // includes ANGULARCLASS_IDLE_PROVIDERS
+]);
+```
