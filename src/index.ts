@@ -48,8 +48,10 @@ export class Idle {
   }
 
   polyfillRequestIdleCallback(callback: IdleCallback, {timeout}: IdleOptions = {timeout: 50}) {
+    // compiling problem
+    const _self = this;
     let dispose = undefined;
-    this.ngZone.runOutsideAngular(() => {
+    _self.ngZone.runOutsideAngular(() => {
       function cb(): void {
         const start: number = Date.now();
         const deadline: Deadline = {
@@ -69,27 +71,27 @@ export class Idle {
         callback(deadline);
       }
 
-      if (this.ngZone.isStable) {
+      if (_self.ngZone.isStable) {
         let timerId = setTimeout(cb, 10);
-        this.idleHandlers.set(callback, {
+        _self.idleHandlers.set(callback, {
           timerId
         });
       } else {
-        dispose = this.stableObservable$
+        dispose = _self.stableObservable$
           .debounceTime(10)
           .take(1)
           .subscribe(
             () => {
               let timerId = setTimeout(cb, 10);
-              this.idleHandlers.set(callback, {
+              _self.idleHandlers.set(callback, {
                 unsubscribe: dispose.unsubscribe,
                 timerId
               });
             },
             null,
-            () => this.polyfillCancelIdleCallback(callback)
+            () => _self.polyfillCancelIdleCallback(callback)
           );
-        this.idleHandlers.set(callback, {
+        _self.idleHandlers.set(callback, {
           unsubscribe: dispose.unsubscribe
         });
       }
