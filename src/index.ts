@@ -93,9 +93,7 @@ export class Idle {
                 unsubscribe: dispose.unsubscribe,
                 timerId
               });
-            },
-            null,
-            () => this.polyfillCancelIdleCallback(callback));
+            });
         this.idleHandlers.set(callback, {
           unsubscribe: dispose.unsubscribe
         });
