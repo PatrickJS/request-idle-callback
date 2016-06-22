@@ -1,4 +1,4 @@
-import { NgZone, Injectable } from '@angular/core';
+import { NgZone, Injectable, ApplicationRef, APP_INITIALIZER, Injector } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { async } from 'rxjs/scheduler/async';
 import 'rxjs/add/operator/debounceTime';
@@ -99,7 +99,37 @@ export class Idle {
   }
 }
 
-
 export const ANGULARCLASS_IDLE_PROVIDERS = [
   Idle
 ];
+
+export function setupPrefetchInitializer(injector: Injector, callbacks?: Array<Function>) {
+  if (!callbacks || !callbacks.length) {
+    return;
+  }
+  // https://github.com/angular/angular/issues/9101
+  // Delay to avoid circular dependency
+  setTimeout(() => {
+    const appRef = injector.get(ApplicationRef);
+    if (appRef.componentTypes.length === 0) {
+      appRef.registerBootstrapListener(() => {
+        let idle = injector.get(Idle);
+        callbacks.forEach((cb) => idle.requestIdleCallback(cb));
+      });
+    } else {
+      let idle = injector.get(Idle);
+      callbacks.forEach((cb) => idle.requestIdleCallback(cb));
+    }
+  }, 0);
+  return (): any => null;
+}
+
+export function providePrefetchIdleCallbacks(prefetchCallbacks = []) {
+  return [
+    ...ANGULARCLASS_IDLE_PROVIDERS,
+    // Trigger initial navigation
+    { provide: APP_INITIALIZER, multi: true, useFactory: (injector) => {
+      return setupPrefetchInitializer(injector, prefetchCallbacks);
+    }, deps: [Injector] }
+  ];
+}
