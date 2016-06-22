@@ -23,34 +23,40 @@ export class Idle {
       .refCount();
   }
   requestIdleCallback(callback) {
-    ((<any>window).requestIdleCallback || this.polyfillRequestIdleCallback)(callback);
+    if ('requestIdleCallback' in window) {
+      window['requestIdleCallback'](callback);
+    } else {
+      this.polyfillRequestIdleCallback(callback);
+    }
   }
 
   cancelIdleCallback(handler) {
-    ((<any>window).cancelIdleCallback || this.polyfillCancelIdleCallback)(handler);
+    if ('cancelIdleCallback' in window) {
+      window['cancelIdleCallback'](handler);
+    } else {
+      this.polyfillCancelIdleCallback(handler);
+    }
   }
 
   polyfillCancelIdleCallback(handler) {
-    let {
-      unsubscribe,
-      timerId
-    }: any = this.idleHandlers.get(handler);
+    let {unsubscribe, timerId}: any = this.idleHandlers.get(handler);
 
     if (unsubscribe) {
       unsubscribe();
     }
     if (timerId) {
-      this.ngZone.runOutsideAngular(() => {
+      this.ngZone.runOutsideAngular(function() {
         clearTimeout(timerId);
       });
     }
+
     this.idleHandlers.delete(handler);
   }
 
   polyfillRequestIdleCallback(callback: IdleCallback, {timeout}: IdleOptions = {timeout: 50}) {
+    let dispose = undefined;
     // compiling problem
     const _self = this;
-    let dispose = undefined;
     _self.ngZone.runOutsideAngular(() => {
       function cb(): void {
         const start: number = Date.now();
@@ -71,27 +77,26 @@ export class Idle {
         callback(deadline);
       }
 
-      if (_self.ngZone.isStable) {
+      if (this.ngZone.isStable) {
         let timerId = setTimeout(cb, 10);
-        _self.idleHandlers.set(callback, {
+        this.idleHandlers.set(callback, {
           timerId
         });
       } else {
-        dispose = _self.stableObservable$
+        dispose = this.stableObservable$
           .debounceTime(10)
           .take(1)
           .subscribe(
             () => {
               let timerId = setTimeout(cb, 10);
-              _self.idleHandlers.set(callback, {
+              this.idleHandlers.set(callback, {
                 unsubscribe: dispose.unsubscribe,
                 timerId
               });
             },
             null,
-            () => _self.polyfillCancelIdleCallback(callback)
-          );
-        _self.idleHandlers.set(callback, {
+            () => this.polyfillCancelIdleCallback(callback));
+        this.idleHandlers.set(callback, {
           unsubscribe: dispose.unsubscribe
         });
       }

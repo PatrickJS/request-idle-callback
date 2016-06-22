@@ -1,6 +1,6 @@
 {
   "name": "@angularclass/request-idle-callback",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "Partick Stapleton <patrick@angularclass.com>",
   "description": "requestIdleCallback for Angular 2",
   "main": "dist/index.js",
