@@ -1,4 +1,4 @@
-# Angular 2 Request Idle Callback
+# Angular Request Idle Callback
 cross-platform supported `requestIdleCallback` for Angular used for Progressive Web App and Universal Apps
 
 ### Why should I use requestIdleCallback?
@@ -47,7 +47,7 @@ var arrayOfCallbacks = [
 ]
 
 bootstrap(App, [
-  providePrefetchIdleCallbacks(arrayOfCallbacks) // includes ANGULARCLASS_IDLE_PROVIDERS
+  providePrefetchIdleCallbacks(arrayOfCallbacks)
 ]);
 ```
 
